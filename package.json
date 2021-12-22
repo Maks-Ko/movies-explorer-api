@@ -1,0 +1,19 @@
+{
+  "name": "movies-explorer-api",
+  "version": "1.0.0",
+  "description": "server for the diplom website",
+  "main": "index.js",
+  "scripts": {
+    "lint": "npx eslint .",
+    "start": "node app.js",
+    "dev": "nodemon app.js"
+  },
+  "keywords": [],
+  "author": "Maksim Kozhevnikov",
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "^8.5.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.25.3"
+  }
+}
