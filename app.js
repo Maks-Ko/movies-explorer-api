@@ -22,6 +22,11 @@ app.use((req, res, next) => {
 app.use('/', users);
 app.use('/', movies);
 
+app.use((err, req, res) => {
+  const { statusCode = 500, message } = err;
+  res.status(statusCode).send({ message: statusCode === 500 ? 'На сервере произошла ошибка' : message });
+});
+
 app.listen(PORT, () => {
   console.log(`App listening on port ${PORT}`); // eslint-disable-line no-console
 });
