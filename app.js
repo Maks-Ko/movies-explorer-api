@@ -1,7 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const users = require('./routes/users');
-const movies = require('./routes/movie');
+const movies = require('./routes/movies');
 
 const { PORT = 3000 } = process.env;
 const app = express();
