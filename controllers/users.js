@@ -35,7 +35,6 @@ const createUser = (req, res, next) => {
 };
 
 // проверяет почту и пароль
-
 const login = (req, res, next) => {
   const { email, password } = req.body;
 
@@ -77,4 +76,6 @@ const updateUser = (req, res, next) => {
     });
 };
 
-module.exports = { createUser, login, getUser, updateUser };
+module.exports = {
+  createUser, login, getUser, updateUser,
+};
