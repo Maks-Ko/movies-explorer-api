@@ -4,6 +4,7 @@ const users = require('./routes/users');
 const movies = require('./routes/movies');
 const { createUser, login } = require('./controllers/users');
 const auth = require('./middlewares/auth');
+const notFoundRoutes = require('./middlewares/not-found-routes');
 
 const { PORT = 3000 } = process.env;
 const app = express();
@@ -22,6 +23,8 @@ app.use(auth);
 
 app.use('/', users);
 app.use('/', movies);
+
+app.use('*', notFoundRoutes);
 
 app.use((err, req, res) => {
   const { statusCode = 500, message } = err;
