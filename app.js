@@ -2,7 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const users = require('./routes/users');
 const movies = require('./routes/movies');
-const { createUser } = require('./controllers/users');
+const { createUser, login } = require('./controllers/users');
 
 const { PORT = 3000 } = process.env;
 const app = express();
@@ -14,13 +14,8 @@ mongoose.connect('mongodb://localhost:27017/dipfilmsdb', {
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// временное решение авторизации
-// app.use((req, res, next) => {
-//   req.user = { _id: '61c96d8c6a6ff1e73522109d' };
-//   next();
-// });
-
 app.post('/signup', createUser);
+app.post('/signin', login);
 
 app.use('/', users);
 app.use('/', movies);

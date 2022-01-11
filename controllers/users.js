@@ -1,8 +1,11 @@
+const { NODE_ENV, JWT_SECRET } = process.env;
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 const NotFoundError = require('../errors/notFound-error');
 const ValidationError = require('../errors/validation-error');
 const ConflictError = require('../errors/conflict-error');
+const UnauthorizedError = require('../errors/unauthorized-error');
 
 // создаёт пользователя
 const createUser = (req, res, next) => {
@@ -31,6 +34,24 @@ const createUser = (req, res, next) => {
     .catch(next);
 };
 
+// проверяет почту и пароль
+
+const login = (req, res, next) => {
+  const { email, password } = req.body;
+
+  return User.findUserByCredentials(email, password)
+    .then((user) => {
+      const token = jwt.sign({ _id: user._id }, NODE_ENV === 'production' ? JWT_SECRET : 'some-secret-key', { expiresIn: '7d' });
+      res.send({ token });
+    })
+    .catch((err) => {
+      if (err.name === 'Error') {
+        next(new UnauthorizedError('Неправильные почта или пароль'));
+      }
+      next(err);
+    });
+};
+
 // возвращает информацию о пользователе (email и имя)
 const getUser = (req, res, next) => {
   User.findById(req.user._id)
@@ -56,4 +77,4 @@ const updateUser = (req, res, next) => {
     });
 };
 
-module.exports = { createUser, getUser, updateUser };
+module.exports = { createUser, login, getUser, updateUser };
