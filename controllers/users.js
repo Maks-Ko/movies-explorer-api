@@ -1,6 +1,35 @@
+const bcrypt = require('bcryptjs');
 const User = require('../models/user');
 const NotFoundError = require('../errors/notFound-error');
 const ValidationError = require('../errors/validation-error');
+const ConflictError = require('../errors/conflict-error');
+
+// создаёт пользователя
+const createUser = (req, res, next) => {
+  const { email, password, name } = req.body;
+
+  User.findOne({ email })
+    .then((user) => {
+      if (user) {
+        throw new ConflictError('Пользователь с таким email уже существует');
+      }
+      // хеширует пароль
+      bcrypt.hash(password, 10)
+        .then((hash) => User.create({
+          email, password: hash, name,
+        }))
+        .then((userData) => {
+          res.status(201).send(Object.assign(userData, { password: undefined }));
+        })
+        .catch((err) => {
+          if (err.name === 'ValidationError') {
+            next(new ValidationError('Переданы некорректные данные'));
+          }
+          next(err);
+        });
+    })
+    .catch(next);
+};
 
 // возвращает информацию о пользователе (email и имя)
 const getUser = (req, res, next) => {
@@ -27,4 +56,4 @@ const updateUser = (req, res, next) => {
     });
 };
 
-module.exports = { getUser, updateUser };
+module.exports = { createUser, getUser, updateUser };
