@@ -3,6 +3,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const { errors } = require('celebrate');
 const cors = require('cors');
+const helmet = require('helmet');
 const users = require('./routes/users');
 const movies = require('./routes/movies');
 const { createUser, login } = require('./controllers/users');
@@ -15,7 +16,7 @@ const limiter = require('./middlewares/rate-limit');
 const { PORT = 3000 } = process.env;
 const app = express();
 
-mongoose.connect('mongodb://localhost:27017/dipfilmsdb', {
+mongoose.connect('mongodb://localhost:27017/moviesdb', {
   useNewUrlParser: true,
 });
 
@@ -25,6 +26,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(requestLogger);
 
 app.use(limiter);
+
+app.use(helmet());
 
 app.use(cors());
 
