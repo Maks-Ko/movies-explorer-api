@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const { errors } = require('celebrate');
+const cors = require('cors');
 const users = require('./routes/users');
 const movies = require('./routes/movies');
 const { createUser, login } = require('./controllers/users');
@@ -21,6 +22,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use(requestLogger);
+
+app.use(cors());
 
 app.post('/signup', validationCreateUser, createUser);
 app.post('/signin', validationLogin, login);
