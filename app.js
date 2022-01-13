@@ -10,6 +10,7 @@ const auth = require('./middlewares/auth');
 const notFoundRoutes = require('./middlewares/not-found-routes');
 const { validationCreateUser, validationLogin } = require('./middlewares/validation-joi');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
+const limiter = require('./middlewares/rate-limit');
 
 const { PORT = 3000 } = process.env;
 const app = express();
@@ -22,6 +23,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use(requestLogger);
+
+app.use(limiter);
 
 app.use(cors());
 
