@@ -54,7 +54,7 @@ const deleteMovieId = (req, res, next) => {
   Movie.findOne(req.params)
     .orFail(() => new PropertyError('NotFound', 'Объект не найден'))
     .then((movie) => {
-      if (!(movie.owner === req.user._id)) {
+      if (!movie.owner.equals(req.user._id)) {
         throw new ForbiddenError('Запрещено, нет прав');
       } else {
         Movie.findOneAndRemove(req.params)
