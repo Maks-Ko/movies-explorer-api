@@ -1,10 +1,10 @@
 # Учебный проект Яндекс Практикума
 ## Сервис, в котором можно найти фильмы по запросу и сохранить в личном кабинете.
 
-## Репозиторий содержит бэкенд сервиса
+### Репозиторий содержит бэкенд сервиса
 
 Домен сервера https://api.mavko.movies.nomoredomains.rocks
 
 Публиный IP 51.250.17.
 
-### фронтенд сервиса https://github.com/Maks-Ko/movies-explorer-frontend
+Фронтенд сервиса https://github.com/Maks-Ko/movies-explorer-frontend
