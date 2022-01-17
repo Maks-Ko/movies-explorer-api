@@ -14,7 +14,7 @@ const updateUser = (req, res, next) => {
   const { email, name } = req.body;
 
   User.findByIdAndUpdate(req.user._id, { email, name }, { new: true })
-    .orFail(() => new NotFoundError('NotFound', 'Обект не найден'))
+    .orFail(() => new NotFoundError('Обект не найден'))
     .then((user) => res.send({ data: user }))
     .catch((err) => {
       if (err.name === 'CastError') {

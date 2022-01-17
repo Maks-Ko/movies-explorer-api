@@ -52,23 +52,22 @@ const createMovie = (req, res, next) => {
 // удаляет сохранённый фильм по movieId
 const deleteMovieId = (req, res, next) => {
   Movie.findOne(req.params)
-    .orFail(() => new NotFoundError('NotFound', 'Объект не найден'))
+    .orFail(() => new NotFoundError('Объект не найден'))
     .then((movie) => {
       if (!movie.owner.equals(req.user._id)) {
         throw new ForbiddenError('Запрещено, нет прав');
       } else {
-        Movie.findOneAndRemove(req.params)
-          .then((movieDelete) => res.send({ data: movieDelete }))
-          .catch((err) => {
-            if (err.name === 'CastError') {
-              next(new ValidationError('Переданы некорректные данные'));
-            } else {
-              next(err);
-            }
-          });
+        return Movie.findOneAndRemove(req.params)
+          .then((movieDelete) => res.send({ data: movieDelete }));
       }
     })
-    .catch(next);
+    .catch((err) => {
+      if (err.name === 'CastError') {
+        next(new ValidationError('Переданы некорректные данные'));
+      } else {
+        next(err);
+      }
+    });
 };
 
 module.exports = { getMovies, createMovie, deleteMovieId };

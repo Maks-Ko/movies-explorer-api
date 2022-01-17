@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const user = require('./user');
+const { regularExpressionUrl } = require('../utils/constants');
 
 const movieSchema = new mongoose.Schema({
   country: {
@@ -27,7 +28,7 @@ const movieSchema = new mongoose.Schema({
     required: true,
     validate: {
       validator: function validator(v) {
-        return /^((http|https):\/\/)?(www\.)?([A-Za-zА-Яа-я0-9]{1}[A-Za-zА-Яа-я0-9-]*\.?)*\.{1}[A-Za-zА-Яа-я0-9-]{2,8}(\/([\w#!:.?+=&%@!\-/])*)?/.test(v);
+        return regularExpressionUrl.test(v);
       },
       message: 'Неправильный формат ссылки',
     },
@@ -37,7 +38,7 @@ const movieSchema = new mongoose.Schema({
     required: true,
     validate: {
       validator: function validator(v) {
-        return /^((http|https):\/\/)?(www\.)?([A-Za-zА-Яа-я0-9]{1}[A-Za-zА-Яа-я0-9-]*\.?)*\.{1}[A-Za-zА-Яа-я0-9-]{2,8}(\/([\w#!:.?+=&%@!\-/])*)?/.test(v);
+        return regularExpressionUrl.test(v);
       },
       message: 'Неправильный формат ссылки',
     },
@@ -47,7 +48,7 @@ const movieSchema = new mongoose.Schema({
     required: true,
     validate: {
       validator: function validator(v) {
-        return /^((http|https):\/\/)?(www\.)?([A-Za-zА-Яа-я0-9]{1}[A-Za-zА-Яа-я0-9-]*\.?)*\.{1}[A-Za-zА-Яа-я0-9-]{2,8}(\/([\w#!:.?+=&%@!\-/])*)?/.test(v);
+        return regularExpressionUrl.test(v);
       },
       message: 'Неправильный формат ссылки',
     },
