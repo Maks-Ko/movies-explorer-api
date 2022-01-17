@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const user = require('./user');
-const { regularExpressionUrl } = require('../utils/constants');
+const { regularExpressionUrl, incorrectLink } = require('../utils/constants');
 
 const movieSchema = new mongoose.Schema({
   country: {
@@ -30,7 +30,7 @@ const movieSchema = new mongoose.Schema({
       validator: function validator(v) {
         return regularExpressionUrl.test(v);
       },
-      message: 'Неправильный формат ссылки',
+      message: incorrectLink,
     },
   },
   trailer: {
@@ -40,7 +40,7 @@ const movieSchema = new mongoose.Schema({
       validator: function validator(v) {
         return regularExpressionUrl.test(v);
       },
-      message: 'Неправильный формат ссылки',
+      message: incorrectLink,
     },
   },
   thumbnail: {
@@ -50,7 +50,7 @@ const movieSchema = new mongoose.Schema({
       validator: function validator(v) {
         return regularExpressionUrl.test(v);
       },
-      message: 'Неправильный формат ссылки',
+      message: incorrectLink,
     },
   },
   owner: {

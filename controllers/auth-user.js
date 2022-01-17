@@ -5,6 +5,9 @@ const User = require('../models/user');
 const ValidationError = require('../errors/validation-error');
 const ConflictError = require('../errors/conflict-error');
 const UnauthorizedError = require('../errors/unauthorized-error');
+const {
+  created, userWithEmailExists, incorrectData, incorrectDataUser,
+} = require('../utils/constants');
 
 // создаёт пользователя
 const createUser = (req, res, next) => {
@@ -13,7 +16,7 @@ const createUser = (req, res, next) => {
   User.findOne({ email })
     .then((user) => {
       if (user) {
-        throw new ConflictError('Пользователь с таким email уже существует');
+        throw new ConflictError(userWithEmailExists);
       }
       // хеширует пароль
       bcrypt.hash(password, 10)
@@ -21,13 +24,14 @@ const createUser = (req, res, next) => {
           email, password: hash, name,
         }))
         .then((userData) => {
-          res.status(201).send(Object.assign(userData, { password: undefined }));
+          res.status(created).send(Object.assign(userData, { password: undefined }));
         })
         .catch((err) => {
           if (err.name === 'ValidationError') {
-            next(new ValidationError('Переданы некорректные данные'));
+            next(new ValidationError(incorrectData));
+          } else {
+            next(err);
           }
-          next(err);
         });
     })
     .catch(next);
@@ -44,9 +48,10 @@ const login = (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === 'Error') {
-        next(new UnauthorizedError('Неправильные почта или пароль'));
+        next(new UnauthorizedError(incorrectDataUser));
+      } else {
+        next(err);
       }
-      next(err);
     });
 };
 
