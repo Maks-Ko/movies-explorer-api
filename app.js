@@ -6,10 +6,9 @@ const cors = require('cors');
 const helmet = require('helmet');
 const users = require('./routes/users');
 const movies = require('./routes/movies');
-const { createUser, login } = require('./controllers/users');
+const authUser = require('./routes/auth-user');
 const auth = require('./middlewares/auth');
 const notFoundRoutes = require('./middlewares/not-found-routes');
-const { validationCreateUser, validationLogin } = require('./middlewares/validation-joi');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const limiter = require('./middlewares/rate-limit');
 
@@ -31,13 +30,12 @@ app.use(helmet());
 
 app.use(cors());
 
-app.post('/signup', validationCreateUser, createUser);
-app.post('/signin', validationLogin, login);
+app.use(authUser);
 
 app.use(auth);
 
-app.use('/', users);
-app.use('/', movies);
+app.use(users);
+app.use(movies);
 
 app.use('*', notFoundRoutes);
 
