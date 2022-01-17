@@ -6,13 +6,10 @@ const mongoose = require('mongoose');
 const { errors } = require('celebrate');
 const cors = require('cors');
 const helmet = require('helmet');
-const users = require('./routes/users');
-const movies = require('./routes/movies');
-const authUser = require('./routes/auth-user');
-const auth = require('./middlewares/auth');
-const notFoundRoutes = require('./middlewares/not-found-routes');
+const routes = require('./routes/index');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const limiter = require('./middlewares/rate-limit');
+const errorsHandler = require('./middlewares/errors-handler');
 
 const { PORT = 3000 } = process.env;
 const app = express();
@@ -32,23 +29,13 @@ app.use(helmet());
 
 app.use(cors());
 
-app.use(authUser);
-
-app.use(auth);
-
-app.use(users);
-app.use(movies);
-
-app.use('*', notFoundRoutes);
+app.use(routes);
 
 app.use(errorLogger);
 
 app.use(errors());
 
-app.use((err, req, res) => {
-  const { statusCode = 500, message } = err;
-  res.status(statusCode).send({ message: statusCode === 500 ? 'На сервере произошла ошибка' : message });
-});
+app.use(errorsHandler);
 
 app.listen(PORT, () => {
   console.log(`App listening on port ${PORT}`); // eslint-disable-line no-console
