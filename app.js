@@ -1,4 +1,6 @@
 require('dotenv').config();
+
+const { NODE_ENV, MONGO_DB } = process.env;
 const express = require('express');
 const mongoose = require('mongoose');
 const { errors } = require('celebrate');
@@ -15,7 +17,7 @@ const limiter = require('./middlewares/rate-limit');
 const { PORT = 3000 } = process.env;
 const app = express();
 
-mongoose.connect('mongodb://localhost:27017/moviesdb', {
+mongoose.connect(NODE_ENV === 'production' ? MONGO_DB : 'mongodb://localhost:27017/moviesdb', {
   useNewUrlParser: true,
 });
 
