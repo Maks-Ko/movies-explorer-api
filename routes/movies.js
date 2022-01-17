@@ -9,6 +9,6 @@ router.get('/movies', getMovies);
 router.post('/movies', validationCreateMovie, createMovie);
 
 // удаляет сохранённый фильм по id
-router.delete('/movies/:movieId', validationMovieId, deleteMovieId);
+router.delete('/movies/:_id', validationMovieId, deleteMovieId);
 
 module.exports = router;
