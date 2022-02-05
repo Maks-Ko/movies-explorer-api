@@ -36,13 +36,13 @@ const validationCreateMovie = celebrate({
     movieId: Joi.number().required(),
     nameRU: Joi.string().required(),
     nameEN: Joi.string().required(),
-  }),
+  }).unknown(true),
 });
 
 const validationMovieId = celebrate({
   params: Joi.object().keys({
     _id: Joi.string().length(24).hex(),
-  }),
+  }).unknown(true),
 });
 
 module.exports = {
